@@ -30,11 +30,11 @@ async def get_curso(curso_id: int = Path(default=None, title='ID do curso', desc
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Curso não encontrado")
     return curso
 
-@app.post('/cursos', status_code=status.HTTP_201_CREATED, description="Inserir um novo dado para lista de cursos", summary="Inserir novo dado", response_model=Curso)
+@app.post('/cursos', status_code=status.HTTP_201_CREATED, description="Inserir um novo dado para lista de cursos", summary="Inserir novo dado")
 async def post_curso(curso: Curso, db: Any = Depends(fake_db)):
     next_id: int = len(cursos) + 1
-    cursos[next_id] = curso
-    del curso.id 
+    curso.id = next_id
+    cursos.append(curso)
     return curso
 
 
